@@ -1,0 +1,126 @@
+
+///////////////////////////////ADVANCE DATABASE MANAGEMENT SYSTEM//////////////////////////
+
+FAWJIA,JEBA,19-39815-1
+//////////////////////////////////////////Class Test 08/////////////////////////////////
+
+/////1.////
+
+///////////////Create table -Department////////////////
+
+CREATE TABLE Department(D_ID int, constraint jpk PRIMARY KEY(D_ID),
+D_NAME varchar(23));
+
+INSERT INTO Department VALUES ('1','CS');
+INSERT INTO Department VALUES ('2','EEE');
+INSERT INTO Department VALUES ('3','BBA');
+INSERT INTO Department VALUES ('4','LAW');
+INSERT INTO Department VALUES ('5','ENGLISH');
+SELECT*FROM Department;
+
+///////////////Create table -Teacher//////////////////
+
+CREATE TABLE Teacher(T_ID int,constraint z_pk PRIMARY KEY(T_ID),T_NAME varchar(23),SKILL varchar(23),
+D_ID int,constraint w_fk foreign key (D_ID) REFERENCES Department);
+
+INSERT INTO Teacher VALUES ('11','Sam','C','1');
+INSERT INTO Teacher VALUES ('22','Sheldon','Finance',3);
+INSERT INTO Teacher  VALUES ('33','Oliver','Circuits',2);
+INSERT INTO Teacher VALUES ('44','Emma','Criminology',4);
+INSERT INTO Teacher VALUES ('55','Harry','Poetry',5);
+
+select* from Teacher;
+
+///////////sequences to create primary key values for Department table/////////
+
+CREATE SEQUENCE D_ID
+MINVALUE 1
+MAXVALUE 12
+START WITH 6
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+///////////sequences to create primary key values for Teacher table///////////
+
+CREATE SEQUENCE T_ID
+MINVALUE 1
+MAXVALUE 90
+START WITH 66
+INCREMENT BY 10
+NOCACHE
+NOCYCLE;
+//////////////next available Sequence value in Department and Teacher table//////////
+
+INSERT INTO Department(D_ID,D_NAME) VALUES (D_ID.NEXTVAL,'CS');
+INSERT INTO Department(D_ID,D_NAME) VALUES (D_ID.NEXTVAL,'BANGLA');
+
+INSERT INTO Teacher(T_ID,T_NAME,SKILL,D_ID) VALUES (T_ID.NEXTVAL,'Rina','C#',7);
+INSERT INTO Teacher(T_ID,T_NAME,SKILL,D_ID) VALUES (T_ID.NEXTVAL,'Jeba','C++',6);
+
+/////////////////Create one index for Department table /////////////////////////////////////////
+
+CREATE INDEX dept_name_idx
+ON Department(D_NAME);
+
+///////////////Create one index for Teacher table///////////////////////////////
+
+CREATE INDEX tchr_name_idx
+ON Teacher(T_NAME);
+
+///////////////Create Synonym for column D_NAME//////////////////
+
+CREATE SYNONYM d_nm
+FOR D_NAME;
+//////////////Create Synonym for column T_NAME////////////////////
+
+CREATE SYNONYM t_nm
+FOR T_NAME;
+/////////////Create Synonym for Department table////////////
+CREATE SYNONYM dep
+FOR Department;
+
+/////////////Create Synonym for Teacher table//////////////
+CREATE SYNONYM tch
+FOR Teacher;
+
+//////2.//////
+//////////////create role Director, Head and Teacher////////////
+
+CREATE ROLE Director;
+CREATE ROLE Teacher;
+CREATE ROLE Head;
+//////////////create user///////////
+
+create user Sam identified by dean;
+create user Sheldon identified by amy;
+create user Oliver identified by twist;
+create user Emma identified by henry;
+create user Harry identified by ginny;
+
+/////////////The role Director has access to all tables and has the credentials to all system and object privileges.Sam (Password: dean) is the Director////////////
+
+Grant create table,create view,create sequence to Sam;
+
+///////////////////////The role Head can only update and see all data. Sheldon(Password: amy) is the Head.////////
+
+Grant update (D_ID,D_NAME),select ON Department to Sheldon;
+Grant update (T_ID,T_NAME,SKILL,D_ID),select ON Teacher to Sheldon;
+
+///////////////The role Teacher can only see all data. Oliver(Password: twist), Emma (Password: henry) and Harry (Password: ginny) are all teachers.//////
+
+Grant select on Teacher to Oliver,Emma,Harry;
+
+/////3./////
+
+//////////////////3.Create a complex view that displays the employee name and the name of the department they work in////////////////
+
+select*from EMPINFO;
+
+CREATE VIEW emp_dept_vu
+(ENAME,DNAME)
+AS SELECT d.DNAME,e.ENAME
+FROM EMPINFO e,DEPTDATA d
+WHERE e.EMP_ID=d.EMP_ID;
+
+
+

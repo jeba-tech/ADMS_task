@@ -1,0 +1,64 @@
+
+
+///////////////////////////////ADVANCE DATABASE MANAGEMENT SYSTEM//////////////////////////
+
+FAWJIA,JEBA,19-39815-1
+//////////////////////////////////////////Class Test 07///////////////////
+
+////////////////////////////////////////Subquery////////////////////////
+
+////1.	Display the employee names who joined before ALLEN.////
+
+SELECT ENAME FROM EMPINFO WHERE HIRE_DATE<(SELECT HIRE_DATE FROM EMPINFO WHERE ENAME='ALLEN'); 
+
+////2.	Display the employee names that earn a salary that is lower than the salary of all SALESMAN. ////
+
+SELECT ENAME
+FROM EMPINFO
+WHERE SALARY < 
+ALL (SELECT SALARY FROM EMPINFO WHERE JOB = 'SALESMAN'); 
+
+////3.	Display the employee names that earn a salary that is lower than the salary of any SALESMAN. ////
+
+SELECT ENAME
+FROM EMPINFO
+WHERE SALARY <
+ANY (SELECT SALARY FROM EMPINFO WHERE JOB = 'SALESMAN');
+
+
+////4.	Display the employee names who get the department wise lowest amount of salary.////
+
+SELECT ENAME
+FROM EMPINFO  
+WHERE SALARY IN  
+( SELECT MIN(SALARY)  
+FROM EMPINFO  
+);
+
+////5.	Display the employee names who earn less than employee SMITH./////
+
+SELECT ENAME
+FROM EMPINFO
+WHERE SALARY < ALL(SELECT SALARY FROM EMPINFO WHERE JOB = 'SMITH');
+
+/////6.	Insert the following row into emp table: /////
+
+INSERT INTO EMPINFO VALUES(1,'ANGELA','TEACHER',7698,NULL,4500,NULL,20);
+
+/////I.	Using pairwise comparisons display the name, department number, salary, manager ID and job
+ of any employee whose department number and manager ID match both the department number and manager ID of those employee who work as CLERK.
+
+select  ENAME,DEPT_NO,SALARY,MGR_ID,JOB from EMPINFO 
+where (MGR_ID,DEPT_NO) IN (select MGR_ID,DEPT_NO from EMPINFO where JOB='CLERK') AND JOB<>'CLERK';
+
+///// II.	Using non pairwise comparisons display the name, department number, salary, manager ID and job of any
+ employee whose department number and manager ID match any department number and any manager ID of those employee who work as CLERK. 
+               
+select ENAME,DEPT_NO,SALARY,MGR_ID,JOB from EMPINFO 
+where MGR_ID IN (select MGR_ID from EMPINFO where JOB='CLERK') 
+AND DEPT_NO IN (select DEPT_NO from EMPINFO where JOB='CLERK') AND JOB<>'CLERK';
+
+///////////////////After solving i. and ii. delete the row you just inserted from the emp table.//////////
+
+
+DELETE FROM EMPINFO where JOB='TEACHER';

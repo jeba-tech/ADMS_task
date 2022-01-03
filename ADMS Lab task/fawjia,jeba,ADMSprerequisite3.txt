@@ -1,0 +1,66 @@
+
+
+///////////////adms prerequisite 3////
+name-fawjia,jeba
+id-19-39815-1
+//////////////////////////////////////////////////////
+create table Trainer( 
+t_id int, constraint tpk primary key(t_id), 
+t_name varchar(20), 
+t_address varchar(20), 
+salary varchar(23),
+speciality varchar(28));
+insert into Trainer values (1,'Rahim','Banani',5000,'Body building');
+insert into Trainer values (2,'Karim','Gulshan',5000,'weight_loss_transformation');
+insert into Trainer values (3,'Prioty','Dhanmondi',6000,'fitness');
+select* from Trainer;
+create table Member( 
+m_id int, constraint mpk primary key(m_id), 
+m_name varchar(20),
+m_address varchar(23),
+Bill number(22),
+t_id int, constraint fk FOREIGN KEY(t_id) references Trainer(t_id) 
+);
+select* from Member;
+insert into Member values (1,' Asif',' Dhanmondi', 500, 2);
+insert into Member values(2,' Rifat',' Gulshan', 800, 1);
+insert into Member values(3,'Sadia','Basundhora',600,3);
+insert into Member values  (4, 'Redowan',' Basundhora', 700, 1);
+insert into Member values (5 ,'Fahmida', 'Khilkhet', 400, 3);
+insert into Member values (6, 'Afifa', 'Uttara ',500 ,3);
+insert into Member values( 7, 'Sayed',' Dhanmondi', 500, 2);
+/1/
+create sequence member
+start with 1
+increment by 1
+maxvalue 67
+ no cycle | no cache;
+ /2/
+alter table Members rename to Member;
+ /3/
+SELECT m_name
+FROM Member  
+WHERE Bill=  
+( SELECT MAX(Bill)  
+FROM Member  
+);
+/4/
+SELECT m_name
+FROM Member
+ORDER BY Bill ASC;
+/5/
+select m_name from Member where m_name like'%A%';
+/6/
+ select t_name,speciality,m_name from Member,Trainer where t_id=3;
+ /7/
+select m_name,m_address from Member where t_name= 'Prioty';
+/8/
+create view trainer_vw as
+select t_id,t_name,speciality
+from Trainer;
+/9/
+select* trainer_vw;
+/10/
+create view Info as
+select t_id,speciality,m_id
+from Trainer,Member;

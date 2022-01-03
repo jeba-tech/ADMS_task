@@ -1,0 +1,272 @@
+
+
+	###Advance Database Management System  [[ FiNAL_TERM ]]###
+					 
+					 /////////JEBA FAWJIA,19-39815-1////////////
+
+					 ///////////////////////	CT  -   10///////////////
+
+#####	 USERNAME:	scott	 PASSWORD:	tiger  ####
+
+~~>> PL/SQL-----------PART#1
+
+//////////////1.	Write a query that displays "Hello ADBMS Section B" using the concept of literal./////////
+
+
+DECLARE
+     JEBA VARCHAR2(40);
+
+BEGIN
+    JEBA := 'HELLO ADBMS SECTION - B';
+    DBMS_OUTPUT.PUT_LINE(JEBA);
+
+END; 
+
+/////////////2.	Write a query that can add two numbers using the concept of inner block and outer block.//////////
+
+
+
+DECLARE
+    NUMBER_1   NUMBER;
+   NUMBER_2   NUMBER;
+
+BEGIN
+   NUMBER_1 := 1723;
+   NUMBER_2 := 4322;
+
+
+      DECLARE
+           ADD   NUMBER;
+      
+      BEGIN
+          ADD := NUMBER_1 + NUMBER_2;
+          DBMS_OUTPUT.PUT_LINE(ADD);
+      
+      END;
+
+
+
+/////////////3.	Write a query that can multiply three numbers using the concept of literal./////////////
+
+
+DECLARE
+    NUM_1   NUMBER;
+    NUM_2   NUMBER;
+    NUM_3   NUMBER;
+    
+    MULTI NUMBER;
+
+BEGIN
+   NUM_1 := 23;
+   NUM_2 := 32;
+   NUM_3 := 12;
+  
+   MULTI := NUM_1 * NUM_2 * NUM_3;
+   DBMS_OUTPUT.PUT_LINE(MULTI);
+
+END; 
+
+
+
+//////////////4. Write a query that stores "HelloWorld" in a variable and displays it in block letters.//////////////////
+
+DECLARE
+     LETTERS VARCHAR2(30);
+
+BEGIN
+    LETTERS := UPPER ('Hello World');
+    DBMS_OUTPUT.PUT_LINE(LETTERS);
+
+END; 
+
+
+//////////////5.	Write a query that can subtract a smaller number from a larger number and display the result using the concept of variable.
+
+
+DECLARE
+      NUM_1    NUMBER;
+      NUM_2   NUMBER;
+      
+      Sub  NUMBER;
+
+
+BEGIN
+      NUM_1 := 102;
+      NUM_2 := 97;
+      
+      Sub := NUM_1 - NUM_2;
+
+      DBMS_OUTPUT.PUT_LINE('RESULT : ' || ' ' || Sub);
+
+END; 
+
+
+
+////////////////6.	There are four numbers given i.e. 12,14,16,18.  Find out the average.////////////////////
+
+DECLARE
+     NUM_1    NUMBER;
+     NUM_2    NUMBER;
+     NUM_3    NUMBER;
+     NUM_4    NUMBER;
+
+     RES         NUMBER;
+     AVEG      NUMBER;
+
+BEGIN
+     NUM_1 := 12;
+     NUM_2 := 14;
+     NUM_3 := 16;
+     NUM_4 := 18;
+   
+     RES     :=   NUM_1 + NUM_2 + NUM_3 + NUM_4;
+     AVEG  :=  RES / 4;
+     
+     DBMS_OUTPUT.PUT_LINE('GIVEN INPUTS : ' || '    ' || NUM_1 || ' , ' || NUM_2 || ' , ' || NUM_3 || ' , ' || NUM_4);
+     DBMS_OUTPUT.PUT_LINE('AVERAGE : ' || ' ' || AVEG || ' ');
+
+END; 
+
+
+
+//////////////7.	Write a query that displays the value of pi using the concept of constant.///////////////
+
+DECLARE
+     pi CONSTANT NUMBER := 3.1416;
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('VALUE OF pi  :' || '  ' ||  pi);
+
+END; 
+
+
+~~>> PL/SQL-----------PART#2
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+////////////1.	Write a query that can display the name of the department which has department number 10.
+
+ DECLARE
+     NAME VARCHAR2(40);
+     D_ID NUMBER(20) := 10;
+
+BEGIN
+     SELECT DEPTNAME INTO NAME FROM DEPARTMENT WHERE DEPTID = D_ID;
+     DBMS_OUTPUT.PUT_LINE('THE NAME OF DEPARTMENT WITH THE DEPARTMENT ID = ' || '' || D_ID || ' is : >>> ' || NAME || ' <<< ');
+
+END;
+
+
+
+/////////2.	Write a query that can display the name of the department in lower case which has department number 20.
+
+
+DECLARE
+     NAME VARCHAR2(40);
+     D_ID NUMBER := 20;
+
+BEGIN
+     SELECT D_NAME INTO NAME FROM DEPARTMENT WHERE DEPTID = D_ID;
+     DBMS_OUTPUT.PUT_LINE('THE NAME OF DEPARTMENT WITH THE DEPARTMENT NUMBER = ' || '' || D_ID || ' is : >>> ' || LOWER (NAME) || ' <<< ');
+
+END;
+ 
+
+
+////////////3.	Write a query that displays the incremented salary (sal+250) of employee Smith.
+
+ 
+ DECLARE
+     ENAME       VARCHAR2(40);
+     SAL           NUMBER;
+     Increment         NUMBER;
+
+BEGIN     
+     SELECT     EMPNAME, SALARY 
+     INTO       ENAME, SAL 
+     FROM      EMPLOYEES 
+     WHERE    EMPNAME = 'SMITH';
+     
+     Increment   :=   SAL + 250;
+     
+     DBMS_OUTPUT.PUT_LINE(' ORIGINAL SALARY FOR '           || ' ' ||    ENAME   || ' was : ' ||    SAL);
+     DBMS_OUTPUT.PUT_LINE(' INCREMENTED SALARY FOR '     || ' ' ||    ENAME    || '  =  ' ||     Increment);
+
+END;
+
+
+
+
+///////////////4.	Write a query that displays the hiredate of employee KING.
+
+DECLARE
+     E_NAME       VARCHAR2(40);
+     H_DATE        DATE;
+
+BEGIN     
+     SELECT     EMPNAME, HIREDATE 
+     INTO       E_NAME, H_DATE 
+     FROM      EMPLOYEES 
+     WHERE    EMPNAME = 'KING';
+     
+     DBMS_OUTPUT.PUT_LINE(' THE EMPLOYEE '   || ' ' ||    E_NAME    || ' was HIRED IN  :  ' ||    H_DATE   || ' ');
+
+END;
+
+
+
+/////////////5.	Write a query that displays the sum of salary of all the employees.
+
+DECLARE
+    SAL        NUMBER;
+
+BEGIN     
+     SELECT     SUM(SALARY) 
+     INTO       SAL 
+     FROM      EMPLOYEES;
+     
+     DBMS_OUTPUT.PUT_LINE(' THE SUM FOR ALL THE EMPLOYEES  '   || ' = >>  ' ||    SAL    || '  <<');
+
+END; 
+
+
+
+//////////////6.	Write a query that displays the salary and commission of employee Allen.
+
+DECLARE
+     E_NAME       VARCHAR2(40);
+     SAL           NUMBER;
+     COM          NUMBER;
+
+BEGIN     
+     SELECT     EMPNAME, SALARY, COMMISSION
+     INTO       E_NAME, SAL, COM 
+     FROM      EMPLOYEES 
+     WHERE    EMPNAME = 'ALLEN';
+     
+     DBMS_OUTPUT.PUT_LINE(' SALARY  FOR  THE EMPLOYEE '   || ' ' ||    E_NAME    || ' is : >>  ' ||    SAL   || '  << ');
+     DBMS_OUTPUT.PUT_LINE(' COMMISION FOR  THE EMPLOYEE '   || ' ' ||    E_NAME    || ' is : >>  ' ||    COM   || '  << ');
+
+END; 
+
+
+
+////////////////7.	Write a query that displays only those employees who have TT(double T) in their name.
+
+DECLARE
+     E_NAME    VARCHAR2(40);
+
+BEGIN     
+     SELECT     EMPNAME
+     INTO       E_NAME 
+     FROM      EMPLOYEES 
+     WHERE    EMPNAME LIKE '%TT%';
+     
+     DBMS_OUTPUT.PUT_LINE(' NAME OF ONLY THOSE EMPLOYEES WHOSE SPELLING CONTAINS DOUBLE T >> [[ TT ]] <<  ::  ');
+     DBMS_OUTPUT.PUT_LINE(' ');
+     DBMS_OUTPUT.PUT_LINE(' ' ||    E_NAME   || '  ');
+
+END; 
+

@@ -1,0 +1,226 @@
+
+              ###Advance Database Management System  [[ FINAL_TERM ]]###
+					 
+					 /////////JEBA FAWJIA,19-39815-1////////////
+
+/////////////////////Class Test -11///////////////////////////
+
+
+|||PL/SQL|||||
+
+<<<<Part 01:>>>>
+
+/////////1.	Write a query that can multiply two numbers taking input from user.
+
+DECLARE 
+a number:=:a;
+b number:=:b;
+c number;
+BEGIN
+c:=a*b;
+dbms_output.put_line(c);
+END
+
+////////2.	Write a query that can add two numbers if the numbers are equal. Use CASE Statement.
+
+DECLARE 
+a number:=:a;
+b number:=:b;
+ADD number;
+BEGIN
+ADD:=a+b;
+CASE WHEN(a=b) THEN
+dbms_output.put_line('ADDITION ='||ADD);
+ELSE
+dbms_output.put_line('TWO INPUT MUST BE EQUAL');
+END CASE;
+END;
+
+
+
+//////////3.	Write a query that can check if two strings are equal or not. Use IF-THEN-ELSIF Statement.
+
+DECLARE 
+a varchar2(60):=:a;
+b varchar2(60):=:b;
+
+BEGIN
+IF (a=b) THEN
+dbms_output.put_line('TWO EQUAL STRINGS ARE FOUND');
+ELSE IF (a<>b) THEN
+dbms_output.put_line('TWO STRINGS ARE NOT EQUAL');
+ELSE
+dbms_output.put_line('INVALID INPUT');
+END IF;
+END;
+
+//////////4.	Write a query that can multiply two numbers. If the result obtained is less than 100, Hi is displayed, 
+if the result obtained is more than 100, Bye is displayed and if the result obtained is equal to 100, ADBMS is displayed. Use IF-THEN-ELSIF Statement
+
+DECLARE 
+a number:=:a;
+b number:=:b;
+mult number;
+result number;
+BEGIN
+mult := a*b;
+result := mult;
+IF (result>100) THEN
+dbms_output.put_line(result || ' Bye ');
+ELSE IF (result<100) THEN
+dbms_output.put_line(result || ' Hi ');
+ELSE IF (result=100) THEN
+dbms_output.put_line(result || ' ADBMS ');
+ELSE
+dbms_output.put_line('INVALID INPUT');
+END IF;
+END;
+
+////////////5.	Write a query that can check if two numbers are equal or not.  Use CASE Statement.
+
+
+DECLARE 
+a number:=:a;
+b number:=:b;
+
+BEGIN
+
+CASE WHEN(a=b) THEN
+dbms_output.put_line('TWO EQUAL NUMBERS ARE FOUND');
+ELSE
+dbms_output.put_line('TWO NUMBERS ARE NOT EQUAL');
+END CASE;
+END;
+
+
+
+<<<<<<<Part 02:>>>>>>>>>
+
+
+////////////6.	Write a query that can display the salary of employee ALLEN. 
+If ALLEN’s salary is greater than 2000 display ‘SALARY GREATER THAN 2000’ and If not then display ‘SALARY LESS THAN 2000’.
+
+
+DECLARE 
+sal number;
+ename varchar2(30) :='ALLEN';
+BEGIN
+select empname,salary into ename,sal from employee where empname = ename;
+dbms_output.put_line('salary for' ||ename ||' is:' || sal );
+IF (sal>2000) THEN
+dbms_output.put_line(' salary greater than 2000 ');
+ELSE
+dbms_output.put_line(' salary less than 2000');
+END IF;
+END;
+
+/////////////7.	Write a query that can ask user to input the EMPNO of employee WARD and display his salary.
+
+DECLARE 
+empno number:=:employeeid;
+sal number;
+ename varchar2(30) :='WARD';
+BEGIN
+select emp_id,empname,salary into empno,ename,sal from employee where emp_id = empno;
+dbms_output.put_line('EMPLOYEE ID' ||'   ' ||'EMPLOYEE NAME' ||'  '||'SALARY' );
+dbms_output.put_line('-----------------------');
+dbms_output.put_line(empno||' '||ename||'   '||sal);
+END;
+
+
+/////////////8.	Write a query that can ask user to input the EMPNO of employee BLAKE,CLARK and TURNER and display their respective salary
+
+
+
+DECLARE 
+EMPNO number:=:empid_of_BLAKE;
+EMPNO1 number:=:empid_of_CLARK;
+EMPNO2 number:=:empid_of_TURNER;
+
+SAL number;
+SAL1 number;
+SAL2 number;
+
+ENAME varchar2(30) :='BLAKE';
+ENAME1 varchar2(30) :='CLERK';
+ENAME2 varchar2(30) :='TURNER';
+
+BEGIN
+select emp_id,empname,salary into EMPNO,ENAME,SAL from EMPLOYEE where emp_id = EMPNO;
+select emp_id,empname,salary into EMPNO,ENAME1,SAL1 from EMPLOYEE where emp_id = EMPNO1;
+select emp_id,empname,salary into EMPNO,ENAME2,SAL2 from EMPLOYEE where emp_id = EMPNO2;
+
+dbms_output.put_line('EMPLOYEE ID' ||'   ' ||'EMPLOYEE NAME' ||'  '||'SALARY' );
+dbms_output.put_line('-----------------------------------------------------');
+dbms_output.put_line(EMPNO||' '||ENAME||'   '||SAL);
+dbms_output.put_line(EMPNO1||' '||ENAME1||'   '||SAL1);
+dbms_output.put_line(EMPNO2||' '||ENAME2||'   '||SAL2);
+END;
+
+
+////////////9.	Write a query that can ask user to input the EMPNO of employee BLAKE,CLARK and TURNER and display their respective salary, add the salaries and display the total.
+
+DECLARE 
+EMPNO number:=:empid_of_BLAKE;
+EMPNO1 number:=:empid_of_CLARK;
+EMPNO2 number:=:empid_of_TURNER;
+SAL number;
+SAL1 number;
+SAL2 number;
+
+ENAME varchar2(30) :='BLAKE';
+ENAME1 varchar2(30) :='CLERK';
+ENAME2 varchar2(30) :='TURNER';
+ADD_SAL number;
+
+BEGIN
+select emp_id,empname,salary into EMPNO,ENAME,SAL from EMPLOYEE where emp_id = EMPNO;
+select emp_id,empname,salary into EMPNO,ENAME1,SAL1 from EMPLOYEE where emp_id = EMPNO1;
+select emp_id,empname,salary into EMPNO,ENAME2,SAL2 from EMPLOYEE where emp_id = EMPNO2;
+
+dbms_output.put_line('EMPLOYEE ID' ||'   ' ||'EMPLOYEE NAME' ||'  '||'SALARY' );
+dbms_output.put_line('-----------------------------------------------------');
+dbms_output.put_line(EMPNO||' '||ENAME||'   '||SAL);
+dbms_output.put_line(EMPNO1||' '||ENAME1||'   '||SAL1);
+dbms_output.put_line(EMPNO2||' '||ENAME2||'   '||SAL2);
+
+ADD_SAL:=SAL+SAL1+SAL2;
+dbms_output.put_line('-----------------------------------------------------');
+dbms_output.put_line('SUMMATION OF SALARY ='|| ADD_SAL);
+
+END;
+
+
+////////////10.	Write a query that displays the commission of employee SMITH. If SMITH’s commission is NULL. Display ‘NOT APPLICABLE FOR COMMISSION’
+
+DECLARE 
+com number;
+ename varchar2(30) :='SMITH';
+BEGIN
+select empname,commission into ename,com from employee where empname = ename;
+IF(com is null) then
+dbms_output.put_line(ename||'is not applicable for commission' );
+else
+dbms_output.put_line('commission for = '||ename||' is'||com);
+END IF;
+END;
+
+<<<<<<<<Part 03:>>>>>>>
+
+
+/////////////11.Find the output of the following pl/sql.
+
+DECLARE 
+   a  number:=10; 
+   b  number;
+BEGIN 
+   b:=(+a); --identity
+   dbms_output.put_line(b);
+   b:=(-a); --negation
+   dbms_output.put_line(b);
+END; 
+/
+
+
+10
+-10

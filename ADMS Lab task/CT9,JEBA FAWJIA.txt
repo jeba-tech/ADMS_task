@@ -1,0 +1,106 @@
+				          
+						  
+						  
+						  #Advance Database Management System  [ADMS]  CLASS_TEST - 9#
+						  
+		///////////////////JEBA FAWJIA,19-39815-1////////////////
+
+
+create user Dumbledore identified by Phoenix;
+grant connect, resource, unlimited tablespace to DUMBLEDORE;
+grant CREATE VIEW, CREATE SEQUENCE, CREATE SYNONYM to DUMBLEDORE;
+
+///////////////LOGOUT FROM SYSTEM AND USE THE FOLLOWING USERNAME AND PASSWORD FOR RE-LOGIN :://////////
+________________________________________________________________________________________________________________________________
+	      
+			~~~  USERNAME:	DUMBLEDORE			  	~~~   PASSWORD:	PHOENIX
+	/////////////CREATE TABLE STUDENT//////////////////
+	
+CREATE TABLE Student(S_Id int, constraint ppk PRIMARY KEY(S_Id),
+S_Name varchar(23),H_No int,constraint w_fk foreign key (H_No) REFERENCES House);
+
+
+//////•	Create a sequence that has initial value 2, increments by 5, whose maximum value is 97 and which has neither cache nor cycle. 
+		You must use the sequence to assign values to S_Id  i.e. the primary key column of the Student table.
+		
+		
+CREATE SEQUENCE S_Id
+MINVALUE 1
+MAXVALUE 97
+START WITH 2
+INCREMENT BY 5
+NOCACHE
+NOCYCLE;
+
+////////////////QUERY FOR INSERTING VALUE IN STUDENT TABLE ///////////
+
+INSERT INTO Student(S_Id,S_Name,H_No) VALUES (S_Id.NEXTVAL,'Harry',11);
+INSERT INTO Student(S_Id,S_Name,H_No) VALUES (S_Id.NEXTVAL,'Ron',11);
+INSERT INTO Student(S_Id,S_Name,H_No) VALUES (S_Id.NEXTVAL,'Hannah',22);
+INSERT INTO Student(S_Id,S_Name,H_No) VALUES (S_Id.NEXTVAL,'Cedric',22);
+INSERT INTO Student(S_Id,S_Name,H_No) VALUES (S_Id.NEXTVAL,'Cho',33);
+INSERT INTO Student(S_Id,S_Name,H_No) VALUES (S_Id.NEXTVAL,'Luna',33);
+INSERT INTO Student(S_Id,S_Name,H_No) VALUES (S_Id.NEXTVAL,'Draco',44);
+INSERT INTO Student(S_Id,S_Name,H_No) VALUES (S_Id.NEXTVAL,'Goyle',44);
+
+ /////////////////CREATE TABLE HOUSE///////////////////////
+ 
+CREATE TABLE House(H_Id int, constraint opk PRIMARY KEY(H_Id),
+H_Name varchar(23));
+
+////////////////QUERY FOR INSERTING VALUE IN HOUSE TABLE ///////////
+
+
+INSERT INTO House VALUES(11,'Gryffindor');
+INSERT INTO House VALUES(22,'Hufflepuf');
+INSERT INTO House VALUES(33,'Ravenclaw');
+INSERT INTO House VALUES(44,'Slytherin');
+INSERT INTO House VALUES(55,'Harry');
+
+
+•	Create an index on S_Id and S_Name columns from Student table.
+
+CREATE INDEX Sid_name_idx
+ON Student(S_Id,S_Name);
+
+
+•	Write a subquery that displays those students who have IDs that are greater than Cedric’s.
+
+
+ SELECT S_ID, S_NAME  FROM STUDENT
+  		WHERE S_Id > ALL ( SELECT S_Id FROM Student WHERE S_Name= 'CEDRIC') ORDER BY S_Id ASC;
+		
+		
+•	Write a join query that displays the Student Name and House Name of each student.
+
+SELECT Student.S_Name AS "STUDENTS", House.H_Name AS "HOUSE-NAME"
+		FROM Student, House 
+	WHERE (Student.H_Id = House.H_Id);
+	
+	
+•	Create a view consisting of only S_Name column from Student table. Make sure to untick the auto commit option before creating the view.
+
+
+///////////[[ Firstly must untick the CHECKBOX  of AUTOCOMMIT placed at the left top corner of ORACLE SERVER JUST ABOVE THE STARTING LINESPACE FOR QUERY.... ]]
+
+CREATE	VIEW	Student#Name
+	AS SELECT  	S_Name
+	FROM 		Student;
+	
+	
+•	Write a query that deletes the created view.
+
+DELETE FROM	Student#Name;
+
+•	Using rollback re-create the deleted view.
+
+ROLLBACK;
+
+	//////////DO NOT FORGET TO MARK/SELECT THE CHECKBOX OF AUTOCOMMIT AGAIN 
+				TO PROCEED FOR THE NEXT QUERIES AFTER THIS ROLLBACK ......................................
+				
+•	Create a synonym for the view you created earlier.
+
+
+CREATE SYNONYM	Students FOR  Student#Name;
+

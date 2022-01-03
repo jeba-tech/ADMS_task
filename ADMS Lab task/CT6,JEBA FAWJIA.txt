@@ -1,0 +1,123 @@
+
+
+///////////////////////ADVANCE DATABASE MANAGEMENT SYSTEM////////////////////////////
+
+
+///////////////////////////////////////Class Test 06//////////////////////////////////
+
+FAWJIA,JEBA,19-39815-1
+
+/////////////////////////////Joining/////////////////////////////////
+
+//////////////////////1.	Display the name of all the employees who work in BOSTON.///////////
+
+select ENAME from EMPDATA,DEPTDATA where EMPDATA.DEPT_NO=DEPTDATA.DEPT_NO and DEPTDATA.LOCATION='BOSTON';
+
+////////////////////2.	Display the name of all the employees who joined after their manager.///////////
+
+SELECT A.ENAME,A.EMP_ID,A.JOIN_DATE FROM EMPDATA A,
+(SELECT DISTINCT E.EMP_ID,M.EMP_ID AS MGR_ID,M.JOIN_DATE FROM EMPDATA E,EMPDATA M WHERE(E.MGR_ID=M.EMP_ID))B WHERE 
+(A.EMP_ID=B.EMP_ID AND A.JOIN_DATE>B.JOIN_DATE);
+
+///////////////////3.	Display the name of all the employees and their respective manager. If an employee does not have a manger displays ‘NONE’.///////////
+
+SELECT z.ENAME,
+CASE WHEN  MGR_ID.ENAME  is null THEN 'NONE'  
+ELSE MGR_ID.ENAME  END AS MANAGER,
+CASE WHEN  z.MGR_ID is null THEN  0
+ELSE z.MGR_ID END AS MGR
+FROM EMPDATA z, EMPDATA MGR_ID WHERE ( z.MGR_ID = MGR_ID.EMP_ID (+) );
+
+
+//////////////////4.	Display the name, hiredate and salary grades of each employee.////////////
+
+SELECT EMPDATA.JOIN_DATE,EMPDATA.ENAME,DEPTDATA.SALARY,DEPTDATA.SALARY_GRADE   
+FROM EMPDATA , DEPTDATA
+WHERE EMPDATA.DEPT_NO = DEPTDATA.DEPT_NO;  
+
+//////////////////5.	Write a query to display the name, department number, department name and department location for all employees.///////////
+
+SELECT EMPDATA.DEPT_NO, EMPDATA.ENAME,DEPTDATA.DNAME,DEPTDATA.LOCATION  
+FROM EMPDATA , DEPTDATA
+WHERE EMPDATA.DEPT_NO = DEPTDATA.DEPT_NO; 
+
+//////////////////6.	Two tables loan and borrower are given below.////////////
+
+///////query for creating LOAN table///////
+
+CREATE TABLE LOAN(LOAN_NUMBER varchar(8),constraint d_pk PRIMARY KEY(LOAN_NUMBER),
+BRANCH_NAME varchar(14),AMOUNT number(7,2));
+
+SELECT * FROM LOAN;
+INSERT INTO LOAN VALUES ('L-170','DownTown',3000);
+INSERT INTO LOAN VALUES ('L-230','RedWood',4000);
+INSERT INTO LOAN VALUES ('L-260','PerryRidge',1700);
+
+///////query for creating BORROWER table	////////
+
+
+CREATE TABLE BORROWER(BORROWER_NAME varchar(20),constraint kpk PRIMARY KEY(BORROWER_NAME),
+LOAN_NUMBER varchar(14),constraint gfk foreign key (LOAN_NUMBER) REFERENCES LOAN);
+SELECT * FROM BORROWER;
+INSERT INTO BORROWER VALUES ('JONES','L-170');
+INSERT INTO BORROWER VALUES ('SMITH','L-230');
+INSERT INTO BORROWER VALUES ('HAYES','L-260');
+
+
+ ////LEFT OUTER JOIN/// 
+
+SELECT BORROWER_NAME, L.LOAN_NUMBER, BRANCH_NAME, AMOUNT
+		FROM BORROWER B
+		LEFT OUTER JOIN LOAN L
+		ON (B.LOAN_NUMBER = L.LOAN_NUMBER);
+		
+////RiGHT OUTER JOIN /////
+
+SELECT BORROWER_NAME, L.LOAN_NUMBER, BRANCH_NAME, AMOUNT
+		FROM LOAN L
+		RIGHT OUTER JOIN BORROWER B
+		ON (B.LOAN_NUMBER = L.LOAN_NUMBER);
+	
+	
+///// FULL OUTER JOIN ////
+
+SELECT BORROWER_NAME, L.LOAN_NUMBER, BRANCH_NAME, AMOUNT
+		FROM LOAN L
+		FULL OUTER JOIN BORROWER B
+		ON (B.LOAN_NUMBER = L.LOAN_NUMBER);
+		
+/////////////////////////	7.	Cross join the columns ename and grade from emp and salgrade table.///////////
+
+SELECT EMPDATA.ENAME, SALGRADE.SALARY_GRADE 
+			FROM EMPDATA
+		CROSS JOIN SALGRADE 
+	WHERE (EMPDATA.SALARY_GRADE = SALGRADE.SALARY_GRADE)ORDER BY SALARY_GRADE DESC;
+
+
+/////////////////////////8.	Display ename and dname of only those employees who work at accounting department using natural join.//////
+
+SELECT	ENAME, DNAME
+			FROM EMPDATA
+			NATURAL JOIN DEPTDATA 
+		WHERE DNAME IN ('ACCOUNTING');
+
+
+//////////////////////9.	Display the employee name their department name and location of department who does not work at
+                          department 20 through the usage of using clause//////////////
+
+SELECT ENAME,DNAME, LOCATION, DEPT_NO
+			FROM EMPDATA  JOIN DEPTDATA
+         			USING (DEPT_NO) 
+		WHERE (DEPT_NO != 20) ORDER BY DNAME ASC;
+
+	
+//////////////////////10.	Display ename, dname and sal using on clause./////////////		
+
+SELECT	ENAME,DNAME, SALARY 
+			FROM EMPDATA N
+			JOIN DEPTDATA O
+		ON N.DEPT_NO = O.DEPT_NO
+		ORDER BY SALARY ASC;
+
+
+  

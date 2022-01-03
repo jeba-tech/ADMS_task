@@ -1,0 +1,130 @@
+
+
+///////////////////////////////////////////CT5//////////////////////////////
+
+FAWJIA,JEBA,19-39815-1
+
+/////////////////////CREATE USER////////////////
+create user Dumbledore identified by Phoenix;
+
+create role unlimited_tablespace;
+Grant Dumbledore to unlimited_tablespace;
+create role unlimited tablespace;
+GRANT select ON create_tables TO Dumbledore,unlimited_tablespace;
+
+///////////////////////////////CTREATE TABLE-STUDENTT////////////////
+
+CREATE TABLE STUDENTT(S_Id int,constraint p_pk primary key(S_Id),S_Name varchar(23),S_CGPA float,constraint chk_STUDENTT check(S_CGPA<=4.00),S_BloodStatus varchar(28),H_Id int,constraint tfk FOREIGN KEY(H_Id) references HOUSE(H_Id));
+
+////////////////INSERT VALUE IN STUDENTT//////////////////////
+
+insert into STUDENTT values(2,'Harry',3.45,'Halfblood', 11);
+insert into STUDENTT values(7,'Ron',3.01,' Pureblood', 11);
+insert into STUDENTT values(12,'Hannah','',' Pureblood',22);
+insert into STUDENTT values(17,'Cedric', 3.78,' Pureblood', 22);
+insert into STUDENTT values(22,'Cho',3.55,'Muggleborn',33);
+insert into STUDENTT values(27,'Luna',2.89,'',33);
+insert into STUDENTT values(32,'Draco', 3.88,'Pureblood',44);
+insert into STUDENTT values(37,'Goyle',2.10,'Pureblood',44);
+
+SELECT * FROM STUDENTT;
+//////////////////////////////////CREATE TABLE-HOUSE////////////////////////
+
+CREATE TABLE HOUSE(H_Id int,constraint hpk primary key(H_Id),H_Name varchar(23), H_Points int);
+
+//////////////////////////INSERT VALUE IN HOUSE/////////////////////
+
+insert into HOUSE values(11,'Gryffindor',892);
+insert into HOUSE values(22,'Hufflepuf',785);
+insert into HOUSE values(33,'Ravenclaw',789);
+insert into HOUSE values(44,'Slytherin',850);
+
+SELECT*FROM HOUSE;
+
+
+//////////////////////using ARITHMETIC operator/////////////////
+
+1.Show the sum of 'S_ID' and  'H_ID' is greater than 45.
+
+SELECT S_NAME,S_ID, 
+H_ID, (S_ID +H_ID)
+FROM STUDENTT
+WHERE (S_ID + H_ID)>45;
+
+///////////////////////using CONCATENATION operator////////////////
+
+2.Show S_ID , S_NAME,S_CGPA,S_BLOODSTATUS using CONCATENATION .
+
+SELECT S_ID, S_NAME,S_CGPA,S_BLOODSTATUS, 
+      S_NAME||' has BLOODSTATUS '||S_BLOODSTATUS as "new"  FROM STUDENTT;
+	  
+	  
+/////////////////////////using COLUMN ALIAS//////////////////////////  
+3.
+SELECT S_NAME AS NAME
+FROM STUDENTT;
+
+/////////////////////////using LIKE operator/////////////////////
+
+The following SQL statement selects S_NAME,S_ID from STUDENTT with a S_NAME starting with "C":
+4.
+SELECT S_NAME,S_ID FROM STUDENTT
+WHERE S_NAME LIKE 'C%';
+
+///////////////////////////using IS NULL operator///////////////////
+
+The IS NULL operator is used to test for empty values (NULL values).
+
+The following SQL show S_NAME,S_CGPA of STUDENTT with a NULL value in the S_CGPA field:
+5.
+SELECT S_Name,S_CGPA
+FROM STUDENTT
+WHERE S_CGPA IS NULL;
+
+////////////////////////using ORDER BY clause//////////////////////////
+6.Show S_ID,S_NAME from STUDENTT table S_ID in descending order.
+
+SELECT S_ID,S_NAME
+FROM STUDENTT
+ORDER BY S_ID DESC;
+
+/////////////////////////////using SUBSTR function//////////////////
+7.
+Extract a substring from the text in a column (start at position 3, extract 5 characters):
+
+SELECT SUBSTR(S_BLOODSTATUS, 3, 5) AS ExtractString
+FROM STUDENTT;
+/////////////////////////using NVL function////////////////////////
+8.
+The SQL statement above would return 'n/a' if the S_BLOODSTATUS field contained a null value. Otherwise, it would return the S_BLOODSTATUS value.
+
+SELECT NVL(S_BLOODSTATUS, 'n/a')
+FROM STUDENTT;
+
+////////////////////using MAX function///////////////
+
+9.Show maximum CGPA from STUDENTT table.
+
+SELECT MAX(S_CGPA)
+FROM STUDENTT;
+
+//////////////////////////using SUM function//////////////////
+10.Show sum of H_POINTS from HOUSE table.
+
+SELECT SUM(H_Points)
+FROM HOUSE;
+
+//////////////////////using GROUP BY clause///////////////////
+
+11.
+SELECT COUNT(H_ID),H_Name 
+FROM HOUSE
+GROUP BY H_Name;
+
+
+////////////////////////using HAVING clause//////////////////////
+
+12.
+SELECT H_NAME, SUM(H_Points) FROM HOUSE 
+GROUP BY H_NAME
+HAVING SUM(H_Points)<3000; 

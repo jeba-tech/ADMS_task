@@ -1,0 +1,110 @@
+
+              ###Advance Database Management System  [[ FINAL_TERM ]]###
+					 
+					 /////////JEBA FAWJIA,19-39815-1////////////
+
+             /////////////////////Class Test -12///////////////////////////
+
+
+|||PL/SQL|||||
+
+
+//////////1.	Write a query that can display the salary of employee JONES three times using any loop structure of your choice.
+
+DECLARE 
+   a number(27) := 2975; 
+BEGIN 
+   WHILE a < 3000 LOOP 
+      dbms_output.put_line('Salary of JONES is: ' || a); 
+      a := a + 10; 
+   END LOOP; 
+END; 
+/ 
+
+
+//////////2.	Create a function that returns the total number of departments.
+
+CREATE OR REPLACE FUNCTION totaldepartments 
+RETURN number IS 
+   total number(10) := 0; 
+BEGIN 
+   SELECT count(*) into total 
+   FROM dept; 
+   RETURN total;
+  
+END; 
+/ 
+ DECLARE 
+   c number(2);   
+BEGIN 
+   c := totaldepartments(); 
+   dbms_output.put_line('Total number of Departments: ' || c); 
+END; 
+/
+
+
+//////////3.	Create a procedure to update the salary of employee Allen to 100.
+
+
+
+CREATE OR REPLACE PROCEDURE adjust_salary
+    (emp_name IN emp.ENAME%TYPE:='ALLEN')
+    IS
+BEGIN
+   -- update employee's salary
+   UPDATE emp
+   SET sal = 100 
+   WHERE ENAME = emp_name;
+  
+END;
+
+exec adjust_salary;
+
+//////////4.	Create a record that can output the id, name, job, and hiredate of the employee whose Id is 7654.
+
+
+declare
+emp_rec emp%rowtype;
+begin
+select * into emp_rec from emp
+where empno='7654';
+dbms_output.put_line(emp_rec.empno||' '||emp_rec.ename||' '||emp_rec.job||' '||emp_rec.hiredate);
+end
+/
+
+//////////5.	Create a cursor that can output all the data from salgrade table.
+
+declare
+high_sal salgrade.hisal%type;
+low_sal salgrade.losal%type;
+grade salgrade.grade%type;
+cursor c_salgrade is
+select hisal,losal,grade from salgrade;
+begin
+open c_salgrade;
+fetch  c_salgrade into high_sal,low_sal,grade;
+dbms_output.put_line(high_sal||' '||low_sal||' '||grade);
+close c_salgrade;
+end
+/
+
+//////////6.	Create a trigger in such a way that whenever a new row is inserted into the salgrade table an output ‘New Row Added’ is generated.
+
+CREATE OR REPLACE TRIGGER row_added
+after INSERT ON salgrade
+FOR EACH ROW 
+WHEN (NEW.grade > 0) 
+BEGIN 
+dbms_output.put_line('New Row Added');   
+END; 
+/ 
+
+select*from salgrade;
+insert into salgrade values ('6','800','1377');
+
+//////////7.	Create a package that contains a procedure which can display the grade whose losal and hisal is passed as its parameter. 
+
+CREATE OR REPLACE PACKAGE emp_pack AS 
+   PROCEDURE display_Grade(losal emp.empno%type); 
+   PROCEDURE display_Grade(hisal emp.empno%type); 
+END emp_pack; 

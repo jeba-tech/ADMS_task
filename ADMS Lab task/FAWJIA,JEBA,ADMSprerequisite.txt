@@ -1,0 +1,233 @@
+
+//////////////////////////Advance Database Management System Prerequisites//////////////////// 
+
+NAME-FAWJIA,JEBA
+ID- 19-39815-1
+
+//////////////create table-enpinfo//////////////
+
+CREATE TABLE EMPINFO(ENAME varchar(23),EMP_ID int, DEPT_NO int, JOB varchar(23),HIRE_DATE date,SALARY NUMBER(53));
+
+////////////insert value in empinfo////////////
+
+insert into EMPINFO values('JEBA',1,1001,'ANALYST',to_date('01-01-2021','dd-mm-yyyy'),40000);
+insert into EMPINFO values('Faisal',2,1002,'ANALYST',to_date('15-02-2021','dd-mm-yyyy'),38000);
+insert into EMPINFO values('ALLEN',3,1003,'MANAGER',to_date('2010-03-08','yyyy-mm-dd'),48000);
+insert into EMPINFO values('RAJIB',4,1004,'CLERK',to_date('05-01-1999','dd-mm-yyyy'),10000);
+insert into EMPINFO values('RINA',5,1005,'MANAGER',to_date('15-08-1998','dd-mm-yyyy'),50000);
+insert into EMPINFO values('ALINA',6,1006,'PRESIDENT',to_date('11-03-1996','dd-mm-yyyy'),65000);
+insert into EMPINFO values('JISAN',7,1007,'ADMIN',to_date('09-04-1995','dd-mm-yyyy'),30000);
+insert into EMPINFO values('AJGOR',8,1008,'SMITH',to_date('04-01-1995','dd-mm-yyyy'),8000);
+insert into EMPINFO values('KING',9,1009,'SALESMAN',to_date('01-01-1995','dd-mm-yyyy'),15000);
+
+ALTER TABLE EMPINFO ADD DREAMESALARY INT NULL;
+UPDATE EMPINFO SET DREAMESALARY = 79000 WHERE JOB = 'PRESIDENT';
+UPDATE EMPINFO SET DREAMESALARY = 80000 WHERE JOB = 'MANAGER';
+UPDATE EMPINFO SET DREAMESALARY = 40000 WHERE JOB = 'ADMIN';
+UPDATE EMPINFO SET DREAMESALARY = 60000 WHERE JOB = 'ANALYST';
+UPDATE EMPINFO SET DREAMESALARY = 60000 WHERE JOB = 'ANALYST';
+UPDATE EMPINFO SET DREAMESALARY = 34048 WHERE JOB = 'SMITH';
+UPDATE EMPINFO SET DREAMESALARY = 38000 WHERE JOB = 'SALESMAN';
+
+UPDATE EMPINFO SET DREAMESALARY = 34000 WHERE JOB = 'CLERK';
+
+select*from EMPINFO;
+/1/
+SELECT JOB,HIRE_DATE
+FROM EMPINFO 
+ORDER BY DEPT_NO DESC;
+/2/
+SELECT TO_CHAR(SYSDATE,'DAY HH24:MI:SS')AS"DAY AND TIME"FROM DUAL;
+/3/
+SELECT ENAME,SALARY,DREAMESALARY FROM EMPINFO ORDER BY DREAMESALARY ASC;
+
+/4/
+CREATE OR REPLACE FUNCTION is_leap_year(p_date DATE) RETURN INTEGER
+AS
+  v_result INTEGER;
+BEGIN
+  SELECT COUNT(*) INTO v_result
+  FROM dual
+  WHERE TO_CHAR(LAST_DAY(TRUNC(p_date,'YEAR')+31),'DD')='29';
+
+  RETURN v_result;
+END;
+
+
+ SELECT 2015+LEVEL AS YEAR, is_leap_year(ADD_MONTHS(DATE'2015-01-01',12*LEVEL)) leap
+   FROM dual
+    CONNECT BY LEVEL<=1;
+
+
+/5/
+SELECT ENAME,JOB FROM EMPINFO WHERE JOB IN('MANAGER','CLERK','ANALYST');
+
+/6/7/
+CREATE TABLE EMPLOYEES(ENAME varchar(23),E_ID int);
+
+insert into EMPLOYEES values('RIMA',01);
+insert into EMPLOYEES values('ALLEN',02);
+insert into EMPLOYEES values('BELLA',03);
+insert into EMPLOYEES values('GRETTA',04);
+insert into EMPLOYEES values('FLORYTTA',05);
+insert into EMPLOYEES values('MAYMA',06);
+select * from EMPLOYEES;
+/6/
+select ENAME from EMPLOYEES where ENAME like'%M%';
+/7/
+select ENAME from EMPLOYEES where (ENAME like'%LL%'OR ENAME like'%TT%');
+/8/
+SELECT RTRIM ('00abc000','000')FROM DUAL;
+/9/
+CREATE TABLE TEACHER(t_id Number(10),t_name Varchar2(20),phone Number(10),salary Number(7),email Varchar2(30));
+INSERT INTO TEACHER VALUES(1,'ASIF',1233243234,60000,'asif@gmail.com');
+
+select *from TEACHER;
+
+///////////////////////////////////////SUBQUERY//////////////////////////////////
+/1/
+SELECT ENAME FROM EMPINFO WHERE HIRE_DATE>(SELECT HIRE_DATE FROM EMPINFO WHERE ENAME='KING'); 
+ 
+/2/
+SELECT ENAME
+FROM EMPINFO
+WHERE SALARY > 
+ALL (SELECT SALARY FROM EMPINFO WHERE JOB = 'CLERK');
+/3/
+SELECT ENAME
+FROM EMPINFO
+WHERE SALARY > 
+ANY (SELECT SALARY FROM EMPINFO WHERE JOB = 'CLERK');
+
+/4/
+SELECT ENAME
+FROM EMPINFO  
+WHERE SALARY IN  
+( SELECT MAX(SALARY)  
+FROM EMPINFO  
+);
+/5/
+SELECT ENAME
+FROM EMPINFO
+WHERE SALARY > ALL(SELECT SALARY FROM EMPINFO WHERE JOB = 'SMITH');
+
+////////////////////////////////////////JOINING/////////////////////////
+
+///////////create table- EMPDATA/////////////////
+CREATE TABLE EMPDATA(ENAME varchar(23),EMP_ID int,MGR_ID INT, DEPT_NO int, JOB varchar(23),JOIN_DATE date);
+insert into EMPDATA values('JEBA',1,2001,10,'ANALYST',to_date('06-01-1999','dd-mm-yyyy'));
+insert into EMPDATA values('LILLY',2,2002,20,'MANAGER',to_date('13-01-2021','dd-mm-yyyy'));
+insert into EMPDATA values('ALLITA',3,2003,30,'PRESIDENT',to_date('12-07-2020','dd-mm-yyyy'));
+insert into EMPDATA values('ABDULLAH',4,2004,40,'ADMIN',to_date('07-03-1999','dd-mm-yyyy'));
+insert into EMPDATA values('JHON',5,2005,50,'ANALYST',to_date('08-04-2020','dd-mm-yyyy'));
+SELECT* FROM EMPDATA;
+
+/////////////create table-DEPTDATA//////////////
+
+CREATE TABLE DEPTDATA(EMP_ID int,MGR_ID INT, DEPT_NO int,DNAME varchar(34),SALARY float,SALARY_GRADE int,LOCATION varchar(34));
+insert into DEPTDATA values(1,2001,10,'ADMINISTRATION',41000,3,'NEW YORK');
+insert into DEPTDATA values(2,2002,20,'ACCOUNTING',65000,2,'BANGLADESH');
+insert into DEPTDATA values(3,2003,30,'IT SUPPORT',71000,1,'DALLAS');
+insert into DEPTDATA values(4,2004,40,'MARKETING',40000,4,'CICAGO');
+insert into DEPTDATA values(5,2005,50,'CONTRUCTION',43000,5,'DALLAS');
+SELECT* FROM DEPTDATA;
+/1/
+select ENAME from EMPDATA,DEPTDATA where EMPDATA.DEPT_NO=DEPTDATA.DEPT_NO and DEPTDATA.LOCATION='DALLAS';
+/2/
+SELECT A.ENAME,A.EMP_ID,A.JOIN_DATE FROM EMPDATA A,(SELECT DISTINCT E.EMP_ID,M.EMP_ID AS MGR_ID,M.JOIN_DATE FROM EMPDATA E,EMPDATA M WHERE(E.MGR_ID=M.EMP_ID))B WHERE (A.EMP_ID=B.EMP_ID AND A.JOIN_DATE<B.JOIN_DATE);
+
+
+/3/
+SELECT ENAME
+FROM EMPDATA
+WHERE EMP_ID NOT IN (SELECT DISTINCT MGR_ID FROM EMPDATA WHERE MGR_ID IS NOT NULL);
+/4/
+SELECT DEPTDATA.SALARY_GRADE,
+      
+     max(SALARY)
+FROM DEPTDATA
+WHERE DEPTDATA.SALARY_GRADE
+GROUP BY DEPTDATA.SALARY_GRADE;
+/5/
+
+SELECT EMPDATA.DEPT_NO, EMPDATA.ENAME,DEPTDATA.DNAME  
+FROM EMPDATA , DEPTDATA
+WHERE EMPDATA.DEPT_NO = DEPTDATA.DEPT_NO;  
+
+/////////////////////////////////////////////////////SCHEMA DIAGRAM/////////////////////////////////
+
+///1///
+
+/////////////create table-publishers/////////////
+
+CREATE TABLE publishers(pubid number(8),constraint pk primary key(pubid), 
+  pname varchar(23),email varchar(33),phone number(11));
+  
+///////////////insert value in publishers/////////////
+
+insert into publishers values(1,'RINA','rina@gmail.com',1234343534);
+insert into publishers values(2,'TINA','tina@gmail.com',12343123534);
+insert into publishers values(3,'KARIM','karim@gmail.com',1256343534);
+insert into publishers values(4,'MINA','mina@gmail.com',1234123834);
+insert into publishers values(5,'RINA','rina@gmail.com',1234342334);
+
+select * from publishers;
+
+/////////////create table-authors/////////////
+
+CREATE TABLE authors(auid number(10),constraint a_pk primary key(auid), 
+  aname varchar(23),email varchar(33),phone number(11));
+  
+///////////////insert value in authors/////////////
+   
+insert into authors values(6,'RINA','rina@gmail.com',1234343534);
+insert into authors values(7,'TINA','tina@gmail.com',12343123534);
+insert into authors values(8,'KARIM','karim@gmail.com',1256343534);
+insert into authors values(9,'MINA','mina@gmail.com',1234123834);
+insert into authors values(10,'RINA','rina@gmail.com',1234342334);
+select * from authors;
+
+/////////////create table-subjects/////////////
+
+CREATE TABLE subjects(subid number(15),constraint s_pk primary key(subid), 
+  sname varchar(23));
+  
+ ///////////////insert value in subjects/////////////
+ 
+insert into subjects values(11,'math');
+insert into subjects values(12,'physics');
+insert into subjects values(13,'chemistry');
+insert into subjects values(14,'biology');
+insert into subjects values(15,'fiction');
+select * from subjects ;
+
+/////////////create table-titleauthors/////////////
+
+CREATE TABLE titleauthors(titleid number(20),constraint t_fk FOREIGN KEY(titleid) references titles(titleid),
+ auid number(23), constraint a_fk FOREIGN KEY(auid) references authors(auid),importance varchar(33));
+ 
+ ///////////////insert value in titleauthors/////////////
+
+insert into titleauthors values(16,6,'good');
+insert into titleauthors values(17,7,'good');
+insert into titleauthors values(18,8,'strong');
+insert into titleauthors values(19,9,'medium');
+insert into titleauthors values(20,10,'bad');
+select * from titleauthors;
+
+/////////////create table-titles/////////////
+
+CREATE TABLE titles(titleid number(20),constraint t_pk primary key(titleid), title varchar(12),pubid number(5),constraint p_fk FOREIGN KEY(pubid) references publishers(pubid), subid number(10),constraint s_fk FOREIGN KEY(subid) references subjects(subid), pubdate date,cover varchar(23),price float);
+
+///////////////insert value in titles/////////////
+
+insert into titles values(16,'science',1,11,to_date('06-01-1999','dd-mm-yyyy'),'blue',334);
+insert into titles values(17,'science',2,12,to_date('13-01-2021','dd-mm-yyyy'),'red',456);
+insert into titles  values(18,'fiction',3,13,to_date('12-07-2020','dd-mm-yyyy'),'red',23);
+insert into titles values(19,'book',4,14,to_date('07-03-1999','dd-mm-yyyy'),'black',234);
+insert into  titles values(20,'grafic',5,15,to_date('08-04-2020','dd-mm-yyyy'),'gray',43);
+select * from titles;
+
+
+
+
