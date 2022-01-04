@@ -1,0 +1,82 @@
+
+
+2.
+
+create table author(a_id number(10)primary key, a_name varchar2(20));
+create table book(b_id number(10),b_name varchar2(20), isbn varchar2(20),edition varchar2(20), c_id number(10),a_id number(10), primary key(b_id,edition) );
+create table category(c_id number(10)primary key, c_name varchar2(20));
+alter table book add constraint fk_category foreign key (c_id) references category(c_id); 
+alter table book add constraint fk_author foreign key (a_id) references author(a_id); 
+
+insert into author values('1','J.K. Rowling');
+insert into author values('2','Stephenie Meyer');
+insert into author values('3','Dan Brown');
+insert into author values('4','Humayun Ahmed');
+insert into author values('5','Zafar Iqbal');
+
+insert into category values('11','Fantasy');
+insert into category values('22','Romance');
+insert into category values('33','Thriller');
+insert into category values('44','Anti-logic');
+insert into category values('55','Science Fiction');
+
+3.
+ 
+CREATE OR REPLACE FUNCTION totalbook
+RETURN number IS ​
+   total number(15) := 0; ​
+BEGIN ​
+   SELECT count(*) into total ​
+   FROM book;  ​
+   RETURN total; ​
+END; ​
+/ ​
+DECLARE ​
+   a number(15); ​
+BEGIN ​
+   a := totalbook(); ​
+   dbms_output.put_line('Total No of Books: ' || a); ​
+END; 
+
+
+5
+
+DECLARE 
+   book_rec book%rowtype; 
+BEGIN 
+   SELECT * into book_rec FROM book 
+   WHERE b_id = 111;  
+   dbms_output.put_line('book Name: ' || book_rec.b_name); 
+END; 
+/
+
+
+6
+
+DECLARE 
+   book_rec book%rowtype; 
+BEGIN 
+   SELECT b_name into book_rec FROM book
+   dbms_output.put_line('book Name: ' || book_rec.b_name);  
+END; 
+/
+
+8
+
+CREATE OR REPLACE TRIGGER category_added
+after INSERT ON category 
+FOR EACH ROW 
+BEGIN 
+   dbms_output.put_line('New Category Added'); 
+END; 
+/ 
+
+
+10
+
+CREATE PACKAGE book_pack AS  PROCEDURE 
+   display_bbokname(book__id .book_idn%type); 
+END book_pack;
+
+
+
